@@ -1,0 +1,16 @@
+{
+    "hobbit_spaten": {
+        "alpha_predicate":1,
+        "alpha": 0.3,
+        "phi": 1,
+        "measure_level": 0,
+        "keywords_predicates": ""
+    },
+    "spimbench": {
+        "alpha_predicate": 1,
+        "alpha": 1,
+        "phi": 1,
+        "measure_level": 1,
+        "keywords_predicates": "/title"
+    }
+}

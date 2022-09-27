@@ -1,0 +1,141 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ird</groupId>
+	<artifactId>dlinker-adapter</artifactId> <!-- id used as matcher id in descriptor file of seals package and as the project name in gitlab (hobbit) -->
+	<packaging>jar</packaging>
+	<version>1.0</version> <!-- version appearing in descriptor file of seals package and system.ttl file in hobbit -->
+	<description>DLinker Adapter Python matcher for hobbit</description> <!-- description appearing in descriptor file of seals package and system.ttl file in hobbit -->
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<maven.deploy.skip>true</maven.deploy.skip> <!-- needed to call mvn deploy without having a distributionManagement -->
+		<matching.version>3.3</matching.version> <!-- version for all matching related packages -->
+	</properties>
+
+	<repositories>
+		<repository>
+            <id>local repository</id>
+            <url>file://${project.basedir}/repository</url>
+        </repository>
+		
+		<repository>
+			<id>maven.aksw.internal</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>https://maven.aksw.org/repository/internal</url>
+		</repository>
+		<repository>
+			<id>maven.aksw.snapshots</id>
+			<name>University Leipzig, AKSW Maven2 Repository</name>
+			<url>https://maven.aksw.org/repository/snapshots</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+
+		<!--
+		<dependency>
+            <groupId>org.ird</groupId>
+            <artifactId>DLinker-adapter</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+		-->
+		<dependency>
+			<groupId>de.uni-mannheim.informatik.dws.melt</groupId>
+			<artifactId>matching-base</artifactId>
+			<version>${matching.version}</version>
+		</dependency>
+
+		<!-- remove the follwing dependency when building a seals package to create smaller packages with less depedendencies. -->
+
+		<dependency>
+			<groupId>org.hobbit</groupId>
+			<artifactId>core</artifactId>
+			<version>1.0.19</version> <!-- 1.0.10 1.0.9-SNAPSHOT -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<!--            <version>4.2.6</version>-->
+			<version>4.3.6</version>
+			<type>jar</type>
+		</dependency>
+
+		<!--jts extension-->
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.ird.DLinkerAdapter</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<!-- filter all the META-INF files of other artifacts -->
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+					<transformers>
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+						<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+					</transformers>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- the following plugin will:
+            1. create a project (if not already existent) in gitlab with the name of the artifactId
+            2. create or update a system.ttl file which describes the matching system so that version and implementing benchmarks are updated
+            3. set the maven property ${hobbit.imageURL} to the correct value which is normally "git.project-hobbit.eu:4567/${username}/${artifactId}:${project.version}
+            (if you create the gitlab project and system.ttl on your own you can comment out this plugin but then you have to set "hobbit.imageURL" in the properties section of this pom.)
+            The plugin has to appear before the docker-maven-plugin because it generates the maven property used there.
+            To remove the matcher from the platform just delete the Gitlab project.-->
+			<!-- the following plugin will generate a docker image and save it into the target folder -->
+
+		</plugins>
+	</build>
+</project>
