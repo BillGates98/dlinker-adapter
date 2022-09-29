@@ -1,0 +1,2 @@
+2022-09-24T14:18:45,702 [main] INFO de.uni_mannheim.informatik.dws.melt.matching_base.external.cli.process.ProcessOutputAlignmentCollector 85 - The last line of the outout is not a URL - try to find a URL within the last line. Last line was: bill
+2022-09-24T14:18:45,709 [main] WARN de.uni_mannheim.informatik.dws.melt.matching_base.external.cli.process.ProcessOutputAlignmentCollector 109 - No text found which can be transformed to URL. Returning null.

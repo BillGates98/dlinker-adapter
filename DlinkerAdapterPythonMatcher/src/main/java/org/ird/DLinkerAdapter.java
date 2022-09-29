@@ -33,8 +33,6 @@ public class DLinkerAdapter extends AbstractSystemAdapter {
 		System.out.println("initializing times test system...");
 		long time = System.currentTimeMillis();
 
-		super.init();
-
 		System.out.println("Super class initialized. it took " + (System.currentTimeMillis()-time) + "ms");
 
 		time = System.currentTimeMillis();

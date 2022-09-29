@@ -1,26 +1,27 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.ird</groupId>
-	<artifactId>dlinker-adapter</artifactId> <!-- id used as matcher id in descriptor file of seals package and as the project name in gitlab (hobbit) -->
+	<artifactId>dlinker-adapter</artifactId>	<!-- id used as matcher id in descriptor file of seals package and as the project name in gitlab (hobbit) -->
 	<packaging>jar</packaging>
-	<version>1.0</version> <!-- version appearing in descriptor file of seals package and system.ttl file in hobbit -->
-	<description>DLinker Adapter Python matcher for hobbit</description> <!-- description appearing in descriptor file of seals package and system.ttl file in hobbit -->
+	<version>1.0</version>	<!-- version appearing in descriptor file of seals package and system.ttl file in hobbit -->
+	<description>DLinker Adapter Python matcher for hobbit</description>	<!-- description appearing in descriptor file of seals package and system.ttl file in hobbit -->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<maven.deploy.skip>true</maven.deploy.skip> <!-- needed to call mvn deploy without having a distributionManagement -->
-		<matching.version>3.3</matching.version> <!-- version for all matching related packages -->
+		<maven.deploy.skip>true</maven.deploy.skip>		<!-- needed to call mvn deploy without having a distributionManagement -->
+		<matching.version>3.3</matching.version>		<!-- version for all matching related packages -->
 	</properties>
 
 	<repositories>
 		<repository>
-            <id>local repository</id>
-            <url>file://${project.basedir}/repository</url>
-        </repository>
-		
+			<id>local repository</id>
+			<url>file://${project.basedir}/repository</url>
+		</repository>
+
 		<repository>
 			<id>maven.aksw.internal</id>
 			<name>University Leipzig, AKSW Maven2 Repository</name>
@@ -34,40 +35,26 @@
 	</repositories>
 
 	<dependencies>
-
-		<!--
-		<dependency>
-            <groupId>org.ird</groupId>
-            <artifactId>DLinker-adapter</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-		-->
 		<dependency>
 			<groupId>de.uni-mannheim.informatik.dws.melt</groupId>
 			<artifactId>matching-base</artifactId>
 			<version>${matching.version}</version>
 		</dependency>
-
-		<!-- remove the follwing dependency when building a seals package to create smaller packages with less depedendencies. -->
-
 		<dependency>
 			<groupId>org.hobbit</groupId>
 			<artifactId>core</artifactId>
-			<version>1.0.19</version> <!-- 1.0.10 1.0.9-SNAPSHOT -->
+			<version>1.0.19</version>			<!-- 1.0.10 1.0.9-SNAPSHOT -->
 			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>jcl-over-slf4j</artifactId>
-				</exclusion>
 				<exclusion>
 					<groupId>xml-apis</groupId>
 					<artifactId>xml-apis</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-reload4j</artifactId>
+			<version>1.7.33</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
@@ -76,10 +63,13 @@
 			<!--            <version>4.2.6</version>-->
 			<version>4.3.6</version>
 			<type>jar</type>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
-		<!--jts extension-->
-
 	</dependencies>
 
 	<build>
