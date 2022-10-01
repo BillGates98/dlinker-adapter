@@ -82,7 +82,7 @@ class CandidateEntityPairs:
         return dump().read_csv(file_name=file_name)
     
     def insert_to_graph(self, graph=None, fsubject='', ssubject=''):
-        query = """INSERT DATA {  <?psubject>  <?pobject> 1.0 .  }"""
+        query = """INSERT DATA {  <?psubject>\t<?pobject>\t1.0  }"""
         query = query.replace('?psubject', fsubject).replace(
             '?pobject', ssubject)
         # print(query)
@@ -98,6 +98,8 @@ class CandidateEntityPairs:
         good_entities_pairs = []
         bad_entities_pairs = []
         graph=Graph()
+        if os.path.exists("./outputs/same_as_entities.nt"):
+            os.remove("./outputs/same_as_entities.nt")
         for first_so, second_so in tmp_entities_pairs:
             compare = DeepSimilarity(code='*')
             fs, fo = first_so
@@ -105,8 +107,10 @@ class CandidateEntityPairs:
             if compare.comparison_run(first=fo, second=so, alpha=self.alpha, level=self.level) and self.can_save_pair(key=(fs + ss)) :
                 good_entities_pairs.append((fs, ss, fo, so, 1))
                 message = '<' + fs + '>\t<' + ss + '>\t' + '1.0'
-                dump().write_to_txt(file_path='./outputs/logs/links.txt', values=[message])
-                graph = self.insert_to_graph(graph=graph, fsubject=fs, ssubject=ss)
+                print(message)
+                # dump().write_to_txt(file_path='./outputs/logs/links.txt', values=[message])
+                dump().write_to_txt(file_path='./outputs/same_as_entities.nt', values=[message])
+                # graph = self.insert_to_graph(graph=graph, fsubject=fs, ssubject=ss)
         return [graph, good_entities_pairs, bad_entities_pairs]
     
     def process_by_pairs_predicates(self,row=[], graphs=[]):
@@ -140,7 +144,7 @@ class CandidateEntityPairs:
             dump().write_tuples_to_csv(file_name=self.output_path + 'bad_to_validate', data=_bad_entities_pairs, columns=['fsubject', 'ssubject', 'fobject', 'sobject', 'has_matched'])
 
         tmp_file = self.output_path + 'same_as_entities.nt'
-        _graphs.serialize(destination=tmp_file, format='nt')
+        # _graphs.serialize(destination=tmp_file, format='nt')
         self.local_time = datetime.now(tz.gettz())
         # print('----------- END : ', self.local_time, ' -----------')
         # print("--- %s seconds ---" % (time.time() - self.start_time))

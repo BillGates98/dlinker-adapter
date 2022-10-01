@@ -14,5 +14,5 @@ mvn install:install-file \
 
 docker build -t git.project-hobbit.eu:4567/billhappi/dlinker-tool .
 
-# docker push git.project-hobbit.eu:4567/billhappi/dlinker-tool
+docker push git.project-hobbit.eu:4567/billhappi/dlinker-tool
 

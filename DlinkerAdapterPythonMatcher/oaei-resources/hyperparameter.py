@@ -19,7 +19,7 @@ class Hyperparameter:
         graph.parse(input_file, format=get_format(value=input_file))
         return graph
     
-    # def get_params_hobbit(self, input_file=None):
+    # def get_params(self, input_file=None):
     #     graph = self.build_graph(input_file=input_file)
     #     configuration = {
     #         "hobbit_spaten": {
@@ -38,14 +38,26 @@ class Hyperparameter:
     #         }
     #     }
     #     params = None
+    #     founded = False
+    #     output = None
     #     for s, _, _ in graph : 
+            
+    #         if founded == False:
+    #             if ('tomtom' in s) or ('spaten' in s) or ('hobbit' in s):
+    #                 output = 'spatial'
+    #                 founded = True
+                
+    #             if ('bbc.co.uk' in s) :
+    #                 output = 'spimbench'
+    #                 founded = True
+    
     #         if 'bbc.co.uk' in s:
     #             params = configuration['spimbench']
     #             break
-    #         if ('spaten' in s) or ('hobbit' in s):
+    #         if ('spaten' in s) or ('hobbit' in s) or ('tomtom' in s):
     #             params = configuration['hobbit_spaten']
     #             break
-    #     return params['alpha_predicate'], params['alpha'], params['phi'], params['measure_level'], params['keywords_predicates'] 
+    #     return params['alpha_predicate'], params['alpha'], params['phi'], params['measure_level'], output 
         
     def get_params(self, input_file=None):
         graph = self.build_graph(input_file=input_file)

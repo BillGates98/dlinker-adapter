@@ -45,10 +45,7 @@
 			<artifactId>core</artifactId>
 			<version>1.0.19</version>			<!-- 1.0.10 1.0.9-SNAPSHOT -->
 			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
+				<!--<exclusion><groupId>xml-apis</groupId><artifactId>xml-apis</artifactId></exclusion>-->
 			</exclusions>
 		</dependency>
 		<dependency>

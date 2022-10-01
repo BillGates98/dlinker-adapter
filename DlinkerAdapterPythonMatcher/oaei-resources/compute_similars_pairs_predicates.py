@@ -5,9 +5,10 @@ from xmlrpc.client import boolean
 
 from dump import dump
 from check_similarity import CheckSimilarity
-import spacy
+# import spacy
 import log
-nlp = spacy.load('en_core_web_md')
+from deep_similarity import DeepSimilarity
+# nlp = spacy.load('en_core_web_md')
 
 class ComputeSimilarPredicate:
     def __init__(self,keywords_predicates='', predicates=[], graphs=None, alpha_predicate=1, output_path=''):
@@ -93,14 +94,13 @@ class ComputeSimilarPredicate:
         _first_value = self.clean_value(value=first_value)
         _second_value = self.clean_value(value=second_value)
         
-        _nlp_first_value = nlp(_first_value)
-        _nlp_second_value = nlp(_second_value)
-        similarity_percent = _nlp_first_value.similarity(_nlp_second_value)
-        if similarity_percent >= float(self.alpha_predicate) : 
+        # _nlp_first_value = nlp(_first_value)
+        # _nlp_second_value = nlp(_second_value)
+        is_similar = DeepSimilarity(code='').comparison_run(first=_first_value, second=_second_value, alpha=float(self.alpha_predicate)) # _nlp_first_value.similarity(_nlp_second_value)
+        if is_similar : # similarity_percent >= float(self.alpha_predicate) : 
             decision = True
-            # log.info(first_value + ' => ' + second_value + '#= ' + str(similarity_percent))
-        
-        return decision, similarity_percent
+            print(first_value + ' => ' + second_value + '#= ' + str(is_similar))
+        return decision, self.alpha_predicate
     
     def compute_predicate_similarity(self, first_predicates=[], second_predicates=[]):
         """[returns a set of predicates and its similar predicates]

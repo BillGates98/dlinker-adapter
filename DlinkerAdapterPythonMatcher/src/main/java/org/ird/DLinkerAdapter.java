@@ -136,17 +136,12 @@ public class DLinkerAdapter extends AbstractSystemAdapter {
 	}
 
 	@Override
-	public void receiveCommand(byte command, byte[] data) {
-		if (Commands.DATA_GENERATION_FINISHED == command) {
-			System.out.println("my receiveCommand for source");
-			sourceReceiver.terminate();
-		} else if (Commands.TASK_GENERATION_FINISHED == command) {
-			System.out.println("my receiveCommand for target");
-			targetReceiver.terminate();
-		} else if (Commands.BENCHMARK_FINISHED_SIGNAL == command) {
-			System.out.println("End signal so early ended");
-		}
-		super.receiveCommand(command, data);
-	}
+    public void receiveCommand(byte command, byte[] data) {
+        if (Commands.DATA_GENERATION_FINISHED == command) {
+            LOGGER.info("my receiveCommand for source");
+            sourceReceiver.terminate();
+        }
+        super.receiveCommand(command, data);
+    }
 
 }
