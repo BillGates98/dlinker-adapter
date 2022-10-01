@@ -92,11 +92,12 @@ public class CommandPythonMatcher {
     	return output.toString();
     }
     
-    public static void main(String[] args) {
-    	String source = new File("oaei-resources/inputs/spaten_hobbit/source.nt").getAbsolutePath();
-    	String target = new File("oaei-resources/inputs/spaten_hobbit/target.nt").getAbsolutePath();
-    	CommandPythonMatcher cpm1 = new CommandPythonMatcher(source, target);
-    	cpm1.runCommand();
-    }
+//    public static void main(String[] args) {
+//    	String source = new File("oaei-resources/inputs/spaten_hobbit/source.nt").getAbsolutePath();
+//    	String target = new File("oaei-resources/inputs/spaten_hobbit/target.nt").getAbsolutePath();
+//    	CommandPythonMatcher cpm1 = new CommandPythonMatcher(source, target);
+//    	cpm1.runCommand();
+//    }
 }
+
 
