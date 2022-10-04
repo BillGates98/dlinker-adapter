@@ -133,7 +133,7 @@ def serialize_mapping_to_tmp_file(
         for correspondence in alignment:
             out_file.write(__get_mapping_string(*correspondence))
         out_file.write(__get_xml_outro())
-    return urllib.parse.urljoin("file:", urllib.request.pathname2url(out_file))
+    return "file:///" + '/'.join(file.split('/')[1:])
 
 
 # Parser

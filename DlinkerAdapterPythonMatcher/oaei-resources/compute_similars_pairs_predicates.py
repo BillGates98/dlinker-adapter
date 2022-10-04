@@ -13,7 +13,7 @@ from deep_similarity import DeepSimilarity
 class ComputeSimilarPredicate:
     def __init__(self,keywords_predicates='', predicates=[], graphs=None, alpha_predicate=1, output_path=''):
         self.predicates = predicates
-        self.path_to_file = './outputs/outputs.json'
+        # self.path_to_file = './outputs/outputs.json'
         self.graphs = graphs
         self.associated_predicates = {}
         self.alpha_predicate = alpha_predicate
@@ -135,13 +135,14 @@ class ComputeSimilarPredicate:
         values['predicate_2'] = supredicates
         values['value_2'] = supredicates_v
         values['similarities'] = similarities
-        dump().write_to_csv_panda(file_name=self.output_path + 'similars_predicates', data=values)
-        return result
+        # dump().write_to_csv_panda(file_name=self.output_path + 'similars_predicates', data=values)
+        return values
     
     def run(self):
         set_predicates = self.build_pairs(predicates=self.predicates)
         all_couples = []
         for first, second in set_predicates :
             all_couples.append(self.compute_predicate_similarity(first_predicates=first, second_predicates=second))
+        return all_couples
         
                    

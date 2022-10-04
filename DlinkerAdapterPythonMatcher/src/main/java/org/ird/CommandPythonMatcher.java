@@ -2,6 +2,8 @@ package org.ird;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -23,11 +25,11 @@ public class CommandPythonMatcher {
     }
     
     protected String getCommand() {
-        String command = "python3.8 " + getAbsolutePathofResources("oaei-resources/pythonMatcher.py") + " --source ${source} --target ${target}";
+        String command = "python " + getAbsolutePathofResources("oaei-resources/pythonMatcher.py") + " --source ${source} --target ${target}";
         command = command.replace("${source}", this.source);
         command = command.replace("${target}", this.target);
         
-        // command = "p 'file:///tmp/alignment_09k6uu1e.rdf'";
+//        command = "python3.8 <<< print('Hi')"; //  'file:///tmp/alignment_09k6uu1e.rdf'";
         return command;
     }
     
@@ -56,7 +58,29 @@ public class CommandPythonMatcher {
         return true;
     }
     
+    @SuppressWarnings("unused")
+    private void showFileContent(String file) {
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            String line;
+            try {
+                while ((line = br.readLine()) != null) {
+                  System.out.println(line);
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+   
     public String match(String source, String target) {
+        //this.showFileContent(source);
+        //this.showFileContent(target);
         ProcessOutputAlignmentCollector alignmentCollector = new ProcessOutputAlignmentCollector();
         StringBuilder output = new StringBuilder("");
     	try {
@@ -64,12 +88,13 @@ public class CommandPythonMatcher {
             Process process = Runtime.getRuntime().exec(getCommand()); // "echo file:///tmp/alignment_vdeyzwa1.rdf"
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
+            System.out.println("Start get output of subprocess 0%");
             while ((line = reader.readLine()) != null) {
                 output.append(line + "\n");
                 System.out.println(line + "\n");
                 alignmentCollector.processOutput(line);
             }
-  
+            System.out.println("End get output of subprocess 100%");
             int exitVal = process.waitFor();
             if (exitVal == 0) {
             	URL detectedURL = alignmentCollector.getURL();
@@ -77,9 +102,10 @@ public class CommandPythonMatcher {
                 // System.out.println(output);
                 String outputFile = this.getAbsolutePathofResources("oaei-resources") + detectedURL.getFile();
                 System.out.println("Detected file : " + outputFile);
+                // this.showFileContent(outputFile);
                 return outputFile;
             } else {
-            	System.out.println("**************************** Error ******************************");
+            	System.out.println("**************************** Error : " + exitVal + " ******************************");
             }
         }
         catch (IOException e) {
@@ -99,5 +125,4 @@ public class CommandPythonMatcher {
 //    	cpm1.runCommand();
 //    }
 }
-
 

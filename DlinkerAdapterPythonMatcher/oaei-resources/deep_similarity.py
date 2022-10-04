@@ -1,12 +1,8 @@
 
 from string_utils import StringUtils
 # import spacy
-import log
-import validators
-import numpy
 from dump import dump
 
-# nlp = spacy.load('en_core_web_md')
 
 class DeepSimilarity:
     
@@ -19,46 +15,47 @@ class DeepSimilarity:
                 return True
         return False
 
-    def levenshteinDistanceDP(self, token1, token2):
-        distances = numpy.zeros((len(token1) + 1, len(token2) + 1))
+    # def levenshteinDistanceDP(self, token1, token2):
+    #     distances = numpy.zeros((len(token1) + 1, len(token2) + 1))
 
-        for t1 in range(len(token1) + 1):
-            distances[t1][0] = t1
+    #     for t1 in range(len(token1) + 1):
+    #         distances[t1][0] = t1
 
-        for t2 in range(len(token2) + 1):
-            distances[0][t2] = t2
+    #     for t2 in range(len(token2) + 1):
+    #         distances[0][t2] = t2
             
-        a = 0
-        b = 0
-        c = 0
+    #     a = 0
+    #     b = 0
+    #     c = 0
         
-        for t1 in range(1, len(token1) + 1):
-            for t2 in range(1, len(token2) + 1):
-                if (token1[t1-1] == token2[t2-1]):
-                    distances[t1][t2] = distances[t1 - 1][t2 - 1]
-                else:
-                    a = distances[t1][t2 - 1]
-                    b = distances[t1 - 1][t2]
-                    c = distances[t1 - 1][t2 - 1]
+    #     for t1 in range(1, len(token1) + 1):
+    #         for t2 in range(1, len(token2) + 1):
+    #             if (token1[t1-1] == token2[t2-1]):
+    #                 distances[t1][t2] = distances[t1 - 1][t2 - 1]
+    #             else:
+    #                 a = distances[t1][t2 - 1]
+    #                 b = distances[t1 - 1][t2]
+    #                 c = distances[t1 - 1][t2 - 1]
                     
-                    if (a <= b and a <= c):
-                        distances[t1][t2] = a + 1
-                    elif (b <= a and b <= c):
-                        distances[t1][t2] = b + 1
-                    else:
-                        distances[t1][t2] = c + 1
+    #                 if (a <= b and a <= c):
+    #                     distances[t1][t2] = a + 1
+    #                 elif (b <= a and b <= c):
+    #                     distances[t1][t2] = b + 1
+    #                 else:
+    #                     distances[t1][t2] = c + 1
 
-        return distances[len(token1)][len(token2)]
+    #     return distances[len(token1)][len(token2)]
 
     def measure1(self, value1='', value2='', alpha=0):
         decision = False
-        common_string = StringUtils().longest_substring_finder(string1=value1, string2=value2)
+        su = StringUtils()
+        common_string = su.longest_substring_finder(string1=value1, string2=value2)
         _first_common_percent = len(common_string)/len(value1);
         _second_common_percent = len(common_string)/len(value2);
         if len(value1) > 1 and len(value2) > 1 :
             _nfirst_part = value1.replace(common_string, '')
             _nsecond_part = value2.replace(common_string, '')
-            common_string2 = StringUtils().longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
+            common_string2 = su.longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
             if common_string2 == '' and (self.containsNumber(_nfirst_part) or self.containsNumber(_nsecond_part)):
                 decision = False
             else:
@@ -70,13 +67,14 @@ class DeepSimilarity:
     def measure1_(self, value1='', value2='', alpha=0, level=1):
         decision = False
         mean_score = 0
+        su = StringUtils()
         if len(value1) > 1 and len(value2) > 1 :
-            common_string = StringUtils().longest_substring_finder(string1=value1, string2=value2)
+            common_string = su.longest_substring_finder(string1=value1, string2=value2)
             _first_common_percent = len(common_string)/len(value1);
             _second_common_percent = len(common_string)/len(value2);
             _nfirst_part = value1.replace(common_string, '')
             _nsecond_part = value2.replace(common_string, '')
-            common_string2 = StringUtils().longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
+            common_string2 = su.longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
             if common_string2 == '' and (self.containsNumber(_nfirst_part) or self.containsNumber(_nsecond_part)):
                 decision = False
             else:
@@ -86,9 +84,9 @@ class DeepSimilarity:
                 else:
                     if (mean_score >= float(alpha)) :
                         decision = True
-        if decision:
-            message = 'level : ' + str(level) + ' score : ' + str(mean_score) + ' value1 : ' + value1 + ' vs value2 : ' + value2
-            dump().write_to_txt(file_path='./outputs/logs/comparisons.txt', values=[message])
+        # if decision:
+        #     message = 'level : ' + str(level) + ' score : ' + str(mean_score) + ' value1 : ' + value1 + ' vs value2 : ' + value2
+        #     dump().write_to_txt(file_path='./outputs/logs/comparisons.txt', values=[message])
         return decision
 
     def measure2(self, value1='', value2=''):
@@ -102,9 +100,9 @@ class DeepSimilarity:
         decision = True
         return decision
 
-    def comparison_run(self, first='', second='', alpha=0, level=1):
-        _first_value = StringUtils().get_uri_last_part(value = first)
-        _second_value = StringUtils().get_uri_last_part(value = second)
+    def comparison_run(self, first='', second='', alpha=0, level=0):
+        _first_value = first # StringUtils().get_uri_last_part(value = first)
+        _second_value = second # StringUtils().get_uri_last_part(value = second)
         output = self.measure1_(value1=_first_value, value2=_second_value, alpha=alpha, level=level) # and self.measure2(value1=_first_value, value2=_second_value)
         return output
 

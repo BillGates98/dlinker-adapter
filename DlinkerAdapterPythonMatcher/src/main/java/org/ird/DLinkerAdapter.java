@@ -122,8 +122,8 @@ public class DLinkerAdapter extends AbstractSystemAdapter {
 	public void close() throws IOException {
 		// Free the resources you requested here
 		System.out.println("Closing system adapter");
-		System.out.println("System adapter closed successfully.");
 		super.close();
+		System.out.println("System adapter closed successfully.");
 		// Always close the super class after yours!
 	}
 
