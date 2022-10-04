@@ -38,4 +38,4 @@ ADD oaei-resources/ /system/oaei-resources/
 # RUN python /system/oaei-resources/pythonMatcher.py
 # CMD java -cp dlinker-adapter-1.0.jar org.hobbit.core.run.ComponentStarter org.ird.DLinkerAdapter
 
-ENTRYPOINT [ "java", "-cp", "dlinker-adapter-1.0.jar", "org.hobbit.core.run.ComponentStarter", "org.ird.DLinkerAdapter" ]
+# ENTRYPOINT [ "java", "-cp", "dlinker-adapter-1.0.jar", "org.hobbit.core.run.ComponentStarter", "org.ird.DLinkerAdapter" ]
