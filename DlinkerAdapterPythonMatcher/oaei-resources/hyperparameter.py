@@ -116,7 +116,7 @@ class Hyperparameter:
             phi = 1
             ml = 1
 
-        return alpha_predicate, alpha, phi, ml, output
+        return alpha_predicate, 0.3, phi, ml, output
 
     def run(self):
         # self.get_params_hobbit(input_file=self.input_file)

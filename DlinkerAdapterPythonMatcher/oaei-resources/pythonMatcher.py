@@ -20,40 +20,7 @@ from six.moves import urllib
 
 os.environ["PYTHONIOENCODING"] = "utf-8"
 # scriptLocale=locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
-
-
-def longest_substring_finder(string1='', string2=''):
-        answer = ""
-        len1, len2 = len(string1), len(string2)
-        for i in range(len1):
-            for j in range(len2):
-                lcs_temp = 0
-                match = ''
-                while ((i+lcs_temp < len1) and (j+lcs_temp < len2) and string1[i+lcs_temp] == string2[j+lcs_temp]):
-                    match += string2[j+lcs_temp]
-                    lcs_temp += 1
-                if (len(match) > len(answer)):
-                    answer = match
-        return answer
-
-def containsNumber(value):
-    for character in value:
-        if character.isdigit():
-            return True
-    return False
     
-def measure1_(value1='', value2='', alpha=0):
-    decision = True
-    mean_score = 0
-    if len(value1) < 1 and len(value2) < 1:
-        common_string = longest_substring_finder(string1=value1, string2=value2)
-        _first_common_percent = len(common_string)/len(value1);
-        _second_common_percent = len(common_string)/len(value2);
-        mean_score = (_first_common_percent + _second_common_percent) / 2
-        if (mean_score >= float(alpha)):
-            decision = True
-    return decision
-
 def divide_chunks(l, n):
         outputs = [] 
         data = list(l)

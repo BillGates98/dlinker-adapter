@@ -67,22 +67,21 @@ class DeepSimilarity:
     def measure1_(self, value1='', value2='', alpha=0, level=1):
         decision = False
         mean_score = 0
-        su = StringUtils()
         if len(value1) > 1 and len(value2) > 1 :
-            common_string = su.longest_substring_finder(string1=value1, string2=value2)
+            common_string = StringUtils().longest_substring_finder(string1=value1, string2=value2)
             _first_common_percent = len(common_string)/len(value1);
             _second_common_percent = len(common_string)/len(value2);
             _nfirst_part = value1.replace(common_string, '')
             _nsecond_part = value2.replace(common_string, '')
-            common_string2 = su.longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
+            common_string2 = StringUtils().longest_substring_finder(string1=_nfirst_part, string2=_nsecond_part)
             if common_string2 == '' and (self.containsNumber(_nfirst_part) or self.containsNumber(_nsecond_part)):
                 decision = False
             else:
                 mean_score = (_first_common_percent + _second_common_percent ) / 2
-                if len(common_string2) > 0 and int(level) > 0 :
+                if len(common_string2) > 0 and level > 0 :
                     decision = self.measure1_(value1=_nfirst_part, value2=_nsecond_part, alpha=alpha, level=level-1)
                 else:
-                    if (mean_score >= float(alpha)) :
+                    if (mean_score >= alpha) :
                         decision = True
         # if decision:
         #     message = 'level : ' + str(level) + ' score : ' + str(mean_score) + ' value1 : ' + value1 + ' vs value2 : ' + value2
